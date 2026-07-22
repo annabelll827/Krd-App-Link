@@ -81,6 +81,7 @@
             opacity: 0.9;
         }
 
+        /* Modal Menu */
         .menu-modal-overlay {
             position: fixed;
             top: 0;
@@ -133,8 +134,7 @@
         .menu-links-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            text-align: center;
+            gap: 10px;
         }
 
         .menu-link-item {
@@ -142,19 +142,41 @@
             text-decoration: none;
             font-size: 1.05rem;
             font-weight: 500;
-            padding: 10px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .menu-link-item:hover {
+        .menu-link-item:hover, .menu-link-item.active {
             color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.05);
         }
 
+        /* Dashboard Sections / Tabs */
         .dashboard-container {
             width: 100%;
             max-width: 440px;
             display: flex;
             flex-direction: column;
             gap: 16px;
+        }
+
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .tab-content.active {
+            display: flex;
         }
 
         .dash-card {
@@ -210,6 +232,13 @@
         .card-action-btn:hover {
             background: #374151;
         }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -229,44 +258,83 @@
         </div>
     </header>
 
+    <!-- Modal Menu -->
     <div class="menu-modal-overlay" id="menuModal" onclick="closeMenuOnOutside(event)">
         <div class="menu-modal-content">
             <div class="menu-modal-header">
-                <div class="menu-logo"></div>
+                <span style="font-weight: 700; color: #fff;">Menu</span>
                 <button class="menu-close-btn" onclick="toggleMenu()">✕</button>
             </div>
             <div class="menu-links-list">
-                <a href="https://www.instagram.com/callvin_studio?igsh=NXNwdzJraHJlOWt6&utm_source=qr" target="_blank" class="menu-link-item">Instagram</a>
-                <a href="mailto:callvinstodio@gmail.com" class="menu-link-item">Email</a>
-                <a href="#" class="menu-link-item">Premium</a>
+                <div class="menu-link-item active" id="menuOverviewBtn" onclick="switchTab('overview')">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Overview
+                </div>
+                <div class="menu-link-item" id="menuLinksBtn" onclick="switchTab('links')">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    Links
+                </div>
+                <div class="menu-link-item" id="menuSettingsBtn" onclick="switchTab('settings')">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    Settings
+                </div>
+                <div class="menu-link-item" id="menuPremiumBtn" onclick="switchTab('premium')">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Premium
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Main Dashboard Container -->
     <div class="dashboard-container">
         
-        <!-- 1. Your Profile -->
-        <div class="dash-card">
-            <span class="card-label">Your Profail</span>
-            <div class="card-value">
-                <span class="highlight" id="displayUsername">User</span>
-                <button class="card-action-btn" onclick="editAccountName()">Edit</button>
+        <!-- Tab 1: Overview (Default on Login) -->
+        <div class="tab-content active" id="tabOverview">
+            <div class="dash-card">
+                <span class="card-label">Your Profail</span>
+                <div class="card-value">
+                    <span class="highlight" id="displayUsername">User</span>
+                    <button class="card-action-btn" onclick="editAccountName()">Edit</button>
+                </div>
+            </div>
+
+            <div class="dash-card">
+                <span class="card-label">Profile Views</span>
+                <div class="card-value">
+                    <span id="profileViewsCount">0</span>
+                </div>
+            </div>
+
+            <div class="dash-card">
+                <span class="card-label">Link Clicks</span>
+                <div class="card-value">
+                    <span id="linkClicksCount">0</span>
+                </div>
             </div>
         </div>
 
-        <!-- 2. Profile Views -->
-        <div class="dash-card">
-            <span class="card-label">Profile Views</span>
-            <div class="card-value">
-                <span id="profileViewsCount">0</span>
+        <!-- Tab 2: Links -->
+        <div class="tab-content" id="tabLinks">
+            <div class="dash-card">
+                <span class="section-title">Links Manager</span>
+                <p style="color: #9ca3af; font-size: 0.9rem; margin: 0;">Here you can manage and add your custom links.</p>
             </div>
         </div>
 
-        <!-- 3. Link Clicks -->
-        <div class="dash-card">
-            <span class="card-label">Link Clicks</span>
-            <div class="card-value">
-                <span id="linkClicksCount">0</span>
+        <!-- Tab 3: Settings -->
+        <div class="tab-content" id="tabSettings">
+            <div class="dash-card">
+                <span class="section-title">Account Settings</span>
+                <p style="color: #9ca3af; font-size: 0.9rem; margin: 0;">Manage your password, security preferences and configurations.</p>
+            </div>
+        </div>
+
+        <!-- Tab 4: Premium -->
+        <div class="tab-content" id="tabPremium">
+            <div class="dash-card">
+                <span class="section-title">Premium Plan</span>
+                <p style="color: #9ca3af; font-size: 0.9rem; margin: 0;">Upgrade to Krd Link Premium to unlock advanced statistics and custom domains.</p>
             </div>
         </div>
 
@@ -280,6 +348,9 @@
             document.getElementById('displayUsername').innerText = currentUser;
 
             updateDashboardStats();
+            
+            // کاتێک لۆگین دەبێت ڕاستەوخۆ دەچێتە سەر تابی Overview
+            switchTab('overview');
         };
 
         function updateDashboardStats() {
@@ -301,6 +372,31 @@
             if (event.target === document.getElementById('menuModal')) {
                 document.getElementById('menuModal').classList.remove('active');
             }
+        }
+
+        // گۆڕینی تابەکان لە ناو داشبۆرددا
+        function switchTab(tabName) {
+            // لابردنی active لە هەموو تابەکان و دوگمەکان
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.menu-link-item').forEach(item => item.classList.remove('active'));
+
+            // نیشاندانی تابی داواکراو
+            if (tabName === 'overview') {
+                document.getElementById('tabOverview').classList.add('active');
+                document.getElementById('menuOverviewBtn').classList.add('active');
+            } else if (tabName === 'links') {
+                document.getElementById('tabLinks').classList.add('active');
+                document.getElementById('menuLinksBtn').classList.add('active');
+            } else if (tabName === 'settings') {
+                document.getElementById('tabSettings').classList.add('active');
+                document.getElementById('menuSettingsBtn').classList.add('active');
+            } else if (tabName === 'premium') {
+                document.getElementById('tabPremium').classList.add('active');
+                document.getElementById('menuPremiumBtn').classList.add('active');
+            }
+
+            // داخستنی مۆنیۆکە دوای کرتەکردن
+            document.getElementById('menuModal').classList.remove('active');
         }
 
         function editAccountName() {
