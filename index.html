@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl" id="htmlRoot">
+<html lang="en" dir="ltr" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -190,8 +190,8 @@
             </div>
             <div class="lang-select-box">
                 <select class="lang-dropdown-select" id="langSelect" onchange="changeLanguage(this.value)">
+                    <option value="en" selected>English</option>
                     <option value="ku">کوردی</option>
-                    <option value="en">English</option>
                 </select>
             </div>
         </div>
@@ -203,53 +203,53 @@
         <!-- Login Form -->
         <div class="form-section active" id="loginSection">
             <div class="auth-header">
-                <h2 id="loginTitle">چوونە ژوورەوە</h2>
-                <p id="loginSubtitle">ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە</p>
+                <h2 id="loginTitle">Login</h2>
+                <p id="loginSubtitle">Enter your username and password</p>
             </div>
 
             <div class="form-group">
-                <label id="loginUserLabel">ناوی بەکارهێنەر (Username)</label>
-                <input type="text" id="loginUsername" placeholder="ناوی بەکارهێنەر...">
+                <label id="loginUserLabel">Username</label>
+                <input type="text" id="loginUsername" placeholder="Username...">
             </div>
 
             <div class="form-group">
-                <label id="loginPassLabel">وشەی تێپەڕ (Password)</label>
+                <label id="loginPassLabel">Password</label>
                 <input type="password" id="loginPassword" placeholder="••••••••">
             </div>
 
-            <button class="auth-btn" id="loginBtn" onclick="handleLogin()">چوونە ژوورەوە</button>
+            <button class="auth-btn" id="loginBtn" onclick="handleLogin()">Login</button>
 
             <div class="auth-switch" id="loginSwitch">
-                هەژمارت نییە؟ <span onclick="switchForm('register')">دروستکردنی ئەکاونت</span>
+                Don't have an account? <span onclick="switchForm('register')">Register</span>
             </div>
         </div>
 
         <!-- Register Form -->
         <div class="form-section" id="registerSection">
             <div class="auth-header">
-                <h2 id="regTitle">دروستکردنی ئەکاونت</h2>
-                <p id="regSubtitle">ئیمەیڵ و وشەی تێپەڕ بنووسە بۆ دەستپێکردن</p>
+                <h2 id="regTitle">Create Account</h2>
+                <p id="regSubtitle">Enter your email and password to get started</p>
             </div>
 
             <div class="form-group">
-                <label id="regEmailLabel">ئیمەیڵ (Email)</label>
+                <label id="regEmailLabel">Email</label>
                 <input type="email" id="regEmail" placeholder="example@domain.com">
             </div>
 
             <div class="form-group">
-                <label id="regUserLabel">ناوی بەکارهێنەر (Username)</label>
-                <input type="text" id="regUsername" placeholder="ناوی بەکارهێنەر...">
+                <label id="regUserLabel">Username</label>
+                <input type="text" id="regUsername" placeholder="Username...">
             </div>
 
             <div class="form-group">
-                <label id="regPassLabel">وشەی تێپەڕ (Password)</label>
+                <label id="regPassLabel">Password</label>
                 <input type="password" id="regPassword" placeholder="••••••••">
             </div>
 
-            <button class="auth-btn" id="regBtn" onclick="handleRegister()">تۆمارکردن</button>
+            <button class="auth-btn" id="regBtn" onclick="handleRegister()">Register</button>
 
             <div class="auth-switch" id="regSwitch">
-                هەژمارت هەیە؟ <span onclick="switchForm('login')">چوونە ژوورەوە</span>
+                Already have an account? <span onclick="switchForm('login')">Login</span>
             </div>
         </div>
 
@@ -305,7 +305,7 @@
             }
         };
 
-        let currentLang = 'ku';
+        let currentLang = 'en';
 
         function changeLanguage(lang) {
             currentLang = lang;
