@@ -21,7 +21,7 @@
 
         .top-navbar {
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             background: #111827;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
@@ -132,54 +132,87 @@
             color: #38bdf8;
         }
 
-        .auth-container {
+        /* Dashboard Container */
+        .dashboard-container {
             width: 100%;
-            max-width: 420px;
-            background: #111827;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
-            padding: 35px 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            max-width: 440px;
             display: flex;
             flex-direction: column;
-            gap: 22px;
-            text-align: center;
+            gap: 16px;
         }
 
-        .auth-header {
+        /* Dashboard Boxes / Cards */
+        .dash-card {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 22px 24px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             gap: 8px;
+            transition: transform 0.2s ease;
         }
 
-        .auth-header h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin: 0;
-            color: #ffffff;
+        .dash-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
         }
 
-        .welcome-user {
-            color: #38bdf8;
+        .card-label {
+            font-size: 0.85rem;
+            color: #9ca3af;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .auth-btn {
-            background: #38bdf8;
-            border: none;
-            border-radius: 14px;
-            padding: 14px;
-            color: #0b0f19;
-            font-family: 'Vazirmatn', sans-serif;
-            font-size: 1rem;
+        .card-value {
+            font-size: 1.5rem;
             font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-value span.highlight {
+            color: #38bdf8;
+        }
+
+        .card-action-btn {
+            background: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 8px 12px;
+            color: #38bdf8;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 5px;
+            transition: background 0.2s;
+        }
+
+        .card-action-btn:hover {
+            background: #374151;
         }
 
         .logout-btn {
             background: #ef4444;
+            border: none;
+            border-radius: 18px;
+            padding: 14px;
             color: #fff;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -211,23 +244,53 @@
         </div>
     </div>
 
-    <div class="auth-container">
-        <div class="auth-header">
-            <h2>Dashboard</h2>
-            <p>Welcome back, <span class="welcome-user" id="displayUsername">User</span>!</p>
+    <div class="dashboard-container">
+        
+        <!-- 1. خانەی یەکەم: ناوی ئەکاونت -->
+        <div class="dash-card">
+            <span class="card-label">Account Name</span>
+            <div class="card-value">
+                <span class="highlight" id="displayUsername">User</span>
+                <button class="card-action-btn" onclick="editAccountName()">Edit Name</button>
+            </div>
         </div>
-        <div style="background: #1f2937; padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
-            <p style="margin: 0; color: #d1d5db; font-size: 0.9rem;">You have successfully logged into your account management area.</p>
+
+        <!-- 2. خانەی دووەم: Profile Views -->
+        <div class="dash-card">
+            <span class="card-label">Profile Views</span>
+            <div class="card-value">
+                <span id="profileViewsCount">142</span>
+                <button class="card-action-btn" onclick="simulateProfileView()">Simulate View</button>
+            </div>
         </div>
-        <button class="auth-btn logout-btn" onclick="handleLogout()">Logout</button>
+
+        <!-- 3. خانەی سێیەم: Link Clicks -->
+        <div class="dash-card">
+            <span class="card-label">Link Clicks</span>
+            <div class="card-value">
+                <span id="linkClicksCount">38</span>
+                <button class="card-action-btn" onclick="simulateLinkClick()">Simulate Click</button>
+            </div>
+        </div>
+
+        <!-- دوگمەی چوونە دەرەوە -->
+        <button class="logout-btn" onclick="handleLogout()">Logout</button>
     </div>
 
     <script>
-        // پیشاندانی ناوی ئەو بەکارهێنەرەی کە لۆگینی کردووە
+        // وەرگرتنی ناوی بەکارهێنەر لە کاتی لۆگین
         window.onload = function() {
             const savedUser = localStorage.getItem('current_user');
             if (savedUser) {
                 document.getElementById('displayUsername').innerText = savedUser;
+            }
+
+            // هێنانی داتای سەردان و کلیکەکان ئەگەر هەبن لە LocalStorage
+            if (localStorage.getItem('profile_views')) {
+                document.getElementById('profileViewsCount').innerText = localStorage.getItem('profile_views');
+            }
+            if (localStorage.getItem('link_clicks')) {
+                document.getElementById('linkClicksCount').innerText = localStorage.getItem('link_clicks');
             }
         };
 
@@ -239,6 +302,33 @@
             if (event.target === document.getElementById('menuModal')) {
                 document.getElementById('menuModal').classList.remove('active');
             }
+        }
+
+        // کارکردنی خانەی یەکەم (گۆڕینی ناوی ئەکاونت)
+        function editAccountName() {
+            const currentName = document.getElementById('displayUsername').innerText;
+            const newName = prompt("Enter new account name:", currentName);
+            if (newName && newName.trim() !== "") {
+                const trimmedName = newName.trim();
+                document.getElementById('displayUsername').innerText = trimmedName;
+                localStorage.setItem('current_user', trimmedName);
+            }
+        }
+
+        // کارکردنی خانەی دووەم (زیادکردنی Profile View بە شێوازی داینامیکی)
+        function simulateProfileView() {
+            let views = parseInt(document.getElementById('profileViewsCount').innerText);
+            views += 1;
+            document.getElementById('profileViewsCount').innerText = views;
+            localStorage.setItem('profile_views', views);
+        }
+
+        // کارکردنی خانەی سێیەم (زیادکردنی Link Clicks بە شێوازی داینامیکی)
+        function simulateLinkClick() {
+            let clicks = parseInt(document.getElementById('linkClicksCount').innerText);
+            clicks += 1;
+            document.getElementById('linkClicksCount').innerText = clicks;
+            localStorage.setItem('link_clicks', clicks);
         }
 
         function handleLogout() {
