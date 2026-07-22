@@ -64,6 +64,24 @@
             cursor: pointer;
         }
 
+        /* دوگمەی نوێی چوونە دەرەوە / گەڕانەوە لە باڕی سەرەوە */
+        .top-logout-btn {
+            background: #ef4444;
+            border: none;
+            border-radius: 16px;
+            padding: 8px 14px;
+            color: #fff;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .top-logout-btn:hover {
+            opacity: 0.9;
+        }
+
         .menu-modal-overlay {
             position: fixed;
             top: 0;
@@ -194,28 +212,39 @@
             background: #374151;
         }
 
-        .logout-btn {
-            background: #ef4444;
-            border: none;
-            border-radius: 18px;
-            padding: 14px;
-            color: #fff;
-            font-family: 'Vazirmatn', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: opacity 0.2s;
+        .test-links-box {
+            background: #111827;
+            border: 1px dashed rgba(56, 189, 248, 0.3);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
         }
 
-        .logout-btn:hover {
-            opacity: 0.9;
+        .test-btn {
+            background: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px;
+            color: #38bdf8;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .test-btn:hover {
+            background: #374151;
         }
     </style>
 </head>
 <body>
 
+    <!-- باڕی سەرەوە (ڕیزی زمان و دوگمەی چوونە دەرەوە) -->
     <header class="top-navbar">
         <div class="nav-left-actions">
             <div class="menu-icon-btn" onclick="toggleMenu()">
@@ -225,6 +254,9 @@
                 <option value="en" selected>English</option>
                 <option value="ku">کوردی</option>
             </select>
+        </div>
+        <div>
+            <button class="top-logout-btn" onclick="handleLogout()">Logout</button>
         </div>
     </header>
 
@@ -244,7 +276,7 @@
 
     <div class="dashboard-container">
         
-        <!-- 1. خانەی یەکەم: Your Profail -->
+        <!-- 1. Your Profile -->
         <div class="dash-card">
             <span class="card-label">Your Profail</span>
             <div class="card-value">
@@ -253,40 +285,51 @@
             </div>
         </div>
 
-        <!-- 2. خانەی دووەم: Profile Views -->
+        <!-- 2. Profile Views -->
         <div class="dash-card">
             <span class="card-label">Profile Views</span>
             <div class="card-value">
-                <span id="profileViewsCount">142</span>
+                <span id="profileViewsCount">0</span>
             </div>
         </div>
 
-        <!-- 3. خانەی سێیەم: Link Clicks -->
+        <!-- 3. Link Clicks -->
         <div class="dash-card">
             <span class="card-label">Link Clicks</span>
             <div class="card-value">
-                <span id="linkClicksCount">38</span>
+                <span id="linkClicksCount">0</span>
             </div>
         </div>
 
-        <!-- دوگمەی چوونە دەرەوە -->
-        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        <!-- بەشی تاقیکردنەوەی سەردان و کلیکەکان -->
+        <div class="test-links-box">
+            <span style="font-size: 0.8rem; color: #9ca3af;">Testing / Simulation Tools</span>
+            <button class="test-btn" onclick="simulateProfileVisit()">Simulate Profile Visit (+1 View)</button>
+            <button class="test-btn" onclick="simulateExternalLinkClick()">Simulate Link Click (+1 Click)</button>
+        </div>
+
     </div>
 
     <script>
-        window.onload = function() {
-            const savedUser = localStorage.getItem('current_user');
-            if (savedUser) {
-                document.getElementById('displayUsername').innerText = savedUser;
-            }
+        let currentUser = '';
 
-            if (localStorage.getItem('profile_views')) {
-                document.getElementById('profileViewsCount').innerText = localStorage.getItem('profile_views');
-            }
-            if (localStorage.getItem('link_clicks')) {
-                document.getElementById('linkClicksCount').innerText = localStorage.getItem('link_clicks');
-            }
+        window.onload = function() {
+            currentUser = localStorage.getItem('current_user') || 'User';
+            document.getElementById('displayUsername').innerText = currentUser;
+
+            updateDashboardStats();
         };
+
+        function updateDashboardStats() {
+            const viewsKey = `profile_views_${currentUser}`;
+            const clicksKey = `link_clicks_${currentUser}`;
+
+            const views = localStorage.getItem(viewsKey) || 0;
+            const clicks = localStorage.getItem(clicksKey) || 0;
+
+            document.getElementById('profileViewsCount').innerText = views;
+            document.getElementById('linkClicksCount').innerText = clicks;
+        }
 
         function toggleMenu() {
             document.getElementById('menuModal').classList.toggle('active');
@@ -299,13 +342,37 @@
         }
 
         function editAccountName() {
-            const currentName = document.getElementById('displayUsername').innerText;
+            const currentName = currentUser;
             const newName = prompt("Enter new account name:", currentName);
             if (newName && newName.trim() !== "") {
                 const trimmedName = newName.trim();
-                document.getElementById('displayUsername').innerText = trimmedName;
+                
+                const oldViews = localStorage.getItem(`profile_views_${currentName}`) || 0;
+                const oldClicks = localStorage.getItem(`link_clicks_${currentName}`) || 0;
+
+                localStorage.setItem(`profile_views_${trimmedName}`, oldViews);
+                localStorage.setItem(`link_clicks_${trimmedName}`, oldClicks);
+
                 localStorage.setItem('current_user', trimmedName);
+                currentUser = trimmedName;
+                document.getElementById('displayUsername').innerText = trimmedName;
             }
+        }
+
+        function simulateProfileVisit() {
+            const viewsKey = `profile_views_${currentUser}`;
+            let views = parseInt(localStorage.getItem(viewsKey) || 0) + 1;
+            localStorage.setItem(viewsKey, views);
+            document.getElementById('profileViewsCount').innerText = views;
+            alert("A new user visited your profile! View count updated.");
+        }
+
+        function simulateExternalLinkClick() {
+            const clicksKey = `link_clicks_${currentUser}`;
+            let clicks = parseInt(localStorage.getItem(clicksKey) || 0) + 1;
+            localStorage.setItem(clicksKey, clicks);
+            document.getElementById('linkClicksCount').innerText = clicks;
+            alert("Someone clicked your link! Click count updated.");
         }
 
         function handleLogout() {
