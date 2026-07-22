@@ -381,11 +381,6 @@
             font-weight: 600;
         }
 
-        .form-hint {
-            font-size: 0.75rem;
-            color: #9ca3af;
-        }
-
         .url-input-wrapper {
             display: flex;
             background: #1f2937;
@@ -709,6 +704,7 @@
             document.getElementById('premiumDesc').innerText = t.premiumDesc;
         }
 
+        // چارەسەرکردنی کێشەی دەرچوونی خێرا بە چاوەڕوانی تەسکی سەلامەت
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUserId = user.uid;
@@ -720,7 +716,11 @@
 
                 loadUserLinks();
             } else {
-                window.location.href = 'index.html';
+                setTimeout(() => {
+                    if (!auth.currentUser) {
+                        window.location.href = 'index.html';
+                    }
+                }, 1200);
             }
         });
 
