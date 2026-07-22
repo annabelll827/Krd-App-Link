@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl">
+<html lang="ku" dir="rtl" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -189,13 +189,12 @@
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </div>
             <div class="lang-select-box">
-                <select class="lang-dropdown-select">
+                <select class="lang-dropdown-select" id="langSelect" onchange="changeLanguage(this.value)">
                     <option value="ku">کوردی</option>
                     <option value="en">English</option>
                 </select>
             </div>
         </div>
-        <!-- لای ڕاست بەتاڵ کرایەوە و K لادرا -->
         <div></div>
     </header>
 
@@ -204,23 +203,23 @@
         <!-- Login Form -->
         <div class="form-section active" id="loginSection">
             <div class="auth-header">
-                <h2>چوونە ژوورەوە</h2>
-                <p>ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە</p>
+                <h2 id="loginTitle">چوونە ژوورەوە</h2>
+                <p id="loginSubtitle">ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە</p>
             </div>
 
             <div class="form-group">
-                <label>ناوی بەکارهێنەر (Username)</label>
+                <label id="loginUserLabel">ناوی بەکارهێنەر (Username)</label>
                 <input type="text" id="loginUsername" placeholder="ناوی بەکارهێنەر...">
             </div>
 
             <div class="form-group">
-                <label>وشەی تێپەڕ (Password)</label>
+                <label id="loginPassLabel">وشەی تێپەڕ (Password)</label>
                 <input type="password" id="loginPassword" placeholder="••••••••">
             </div>
 
-            <button class="auth-btn" onclick="handleLogin()">چوونە ژوورەوە</button>
+            <button class="auth-btn" id="loginBtn" onclick="handleLogin()">چوونە ژوورەوە</button>
 
-            <div class="auth-switch">
+            <div class="auth-switch" id="loginSwitch">
                 هەژمارت نییە؟ <span onclick="switchForm('register')">دروستکردنی ئەکاونت</span>
             </div>
         </div>
@@ -228,28 +227,28 @@
         <!-- Register Form -->
         <div class="form-section" id="registerSection">
             <div class="auth-header">
-                <h2>دروستکردنی ئەکاونت</h2>
-                <p>ئیمەیڵ و وشەی تێپەڕ بنووسە بۆ دەستپێکردن</p>
+                <h2 id="regTitle">دروستکردنی ئەکاونت</h2>
+                <p id="regSubtitle">ئیمەیڵ و وشەی تێپەڕ بنووسە بۆ دەستپێکردن</p>
             </div>
 
             <div class="form-group">
-                <label>ئیمەیڵ (Email)</label>
+                <label id="regEmailLabel">ئیمەیڵ (Email)</label>
                 <input type="email" id="regEmail" placeholder="example@domain.com">
             </div>
 
             <div class="form-group">
-                <label>ناوی بەکارهێنەر (Username)</label>
+                <label id="regUserLabel">ناوی بەکارهێنەر (Username)</label>
                 <input type="text" id="regUsername" placeholder="ناوی بەکارهێنەر...">
             </div>
 
             <div class="form-group">
-                <label>وشەی تێپەڕ (Password)</label>
+                <label id="regPassLabel">وشەی تێپەڕ (Password)</label>
                 <input type="password" id="regPassword" placeholder="••••••••">
             </div>
 
-            <button class="auth-btn" onclick="handleRegister()">تۆمارکردن</button>
+            <button class="auth-btn" id="regBtn" onclick="handleRegister()">تۆمارکردن</button>
 
-            <div class="auth-switch">
+            <div class="auth-switch" id="regSwitch">
                 هەژمارت هەیە؟ <span onclick="switchForm('login')">چوونە ژوورەوە</span>
             </div>
         </div>
@@ -257,6 +256,78 @@
     </div>
 
     <script>
+        const translations = {
+            ku: {
+                loginTitle: "چوونە ژوورەوە",
+                loginSubtitle: "ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە",
+                loginUserLabel: "ناوی بەکارهێنەر (Username)",
+                loginPassLabel: "وشەی تێپەڕ (Password)",
+                loginBtn: "چوونە ژوورەوە",
+                loginSwitchText: "هەژمارت نییە؟",
+                loginSwitchLink: "دروستکردنی ئەکاونت",
+                
+                regTitle: "دروستکردنی ئەکاونت",
+                regSubtitle: "ئیمەیڵ و وشەی تێپەڕ بنووسە بۆ دەستپێکردن",
+                regEmailLabel: "ئیمەیڵ (Email)",
+                regUserLabel: "ناوی بەکارهێنەر (Username)",
+                regPassLabel: "وشەی تێپەڕ (Password)",
+                regBtn: "تۆمارکردن",
+                regSwitchText: "هەژمارت هەیە؟",
+                regSwitchLink: "چوونە ژوورەوە"
+            },
+            en: {
+                loginTitle: "Login",
+                loginSubtitle: "Enter your username and password",
+                loginUserLabel: "Username",
+                loginPassLabel: "Password",
+                loginBtn: "Login",
+                loginSwitchText: "Don't have an account?",
+                loginSwitchLink: "Register",
+                
+                regTitle: "Create Account",
+                regSubtitle: "Enter your email and password to get started",
+                regEmailLabel: "Email",
+                regUserLabel: "Username",
+                regPassLabel: "Password",
+                regBtn: "Register",
+                regSwitchText: "Already have an account?",
+                regSwitchLink: "Login"
+            }
+        };
+
+        let currentLang = 'ku';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            const htmlRoot = document.getElementById('htmlRoot');
+
+            if (lang === 'ku') {
+                htmlRoot.setAttribute('dir', 'rtl');
+                htmlRoot.setAttribute('lang', 'ku');
+            } else {
+                htmlRoot.setAttribute('dir', 'ltr');
+                htmlRoot.setAttribute('lang', 'en');
+            }
+
+            // Login texts
+            document.getElementById('loginTitle').innerText = t.loginTitle;
+            document.getElementById('loginSubtitle').innerText = t.loginSubtitle;
+            document.getElementById('loginUserLabel').innerText = t.loginUserLabel;
+            document.getElementById('loginPassLabel').innerText = t.loginPassLabel;
+            document.getElementById('loginBtn').innerText = t.loginBtn;
+            document.getElementById('loginSwitch').innerHTML = `${t.loginSwitchText} <span onclick="switchForm('register')">${t.loginSwitchLink}</span>`;
+
+            // Register texts
+            document.getElementById('regTitle').innerText = t.regTitle;
+            document.getElementById('regSubtitle').innerText = t.regSubtitle;
+            document.getElementById('regEmailLabel').innerText = t.regEmailLabel;
+            document.getElementById('regUserLabel').innerText = t.regUserLabel;
+            document.getElementById('regPassLabel').innerText = t.regPassLabel;
+            document.getElementById('regBtn').innerText = t.regBtn;
+            document.getElementById('regSwitch').innerHTML = `${t.regSwitchText} <span onclick="switchForm('login')">${t.regSwitchLink}</span>`;
+        }
+
         function switchForm(type) {
             const loginSec = document.getElementById('loginSection');
             const registerSec = document.getElementById('registerSection');
@@ -280,7 +351,7 @@
                 localStorage.setItem('user_pass_' + username, password);
                 window.location.href = 'dashboard.html';
             } else {
-                alert('تکایە هەموو خانەکان پڕبکەرەوە!');
+                alert(currentLang === 'ku' ? 'تکایە هەموو خانەکان پڕبکەرەوە!' : 'Please fill in all fields!');
             }
         }
 
@@ -292,7 +363,7 @@
                 localStorage.setItem('current_user', username);
                 window.location.href = 'dashboard.html';
             } else {
-                alert('تکایە ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە!');
+                alert(currentLang === 'ku' ? 'تکایە ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە!' : 'Please enter username and password!');
             }
         }
     </script>
