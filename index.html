@@ -261,7 +261,9 @@
                 loginTitle: "چوونە ژوورەوە",
                 loginSubtitle: "ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە",
                 loginUserLabel: "ناوی بەکارهێنەر (Username)",
+                loginUserPlaceholder: "ناوی بەکارهێنەر...",
                 loginPassLabel: "وشەی تێپەڕ (Password)",
+                loginPassPlaceholder: "••••••••",
                 loginBtn: "چوونە ژوورەوە",
                 loginSwitchText: "هەژمارت نییە؟",
                 loginSwitchLink: "دروستکردنی ئەکاونت",
@@ -269,8 +271,11 @@
                 regTitle: "دروستکردنی ئەکاونت",
                 regSubtitle: "ئیمەیڵ و وشەی تێپەڕ بنووسە بۆ دەستپێکردن",
                 regEmailLabel: "ئیمەیڵ (Email)",
+                regEmailPlaceholder: "example@domain.com",
                 regUserLabel: "ناوی بەکارهێنەر (Username)",
+                regUserPlaceholder: "ناوی بەکارهێنەر...",
                 regPassLabel: "وشەی تێپەڕ (Password)",
+                regPassPlaceholder: "••••••••",
                 regBtn: "تۆمارکردن",
                 regSwitchText: "هەژمارت هەیە؟",
                 regSwitchLink: "چوونە ژوورەوە"
@@ -279,7 +284,9 @@
                 loginTitle: "Login",
                 loginSubtitle: "Enter your username and password",
                 loginUserLabel: "Username",
+                loginUserPlaceholder: "Username...",
                 loginPassLabel: "Password",
+                loginPassPlaceholder: "••••••••",
                 loginBtn: "Login",
                 loginSwitchText: "Don't have an account?",
                 loginSwitchLink: "Register",
@@ -287,8 +294,11 @@
                 regTitle: "Create Account",
                 regSubtitle: "Enter your email and password to get started",
                 regEmailLabel: "Email",
+                regEmailPlaceholder: "example@domain.com",
                 regUserLabel: "Username",
+                regUserPlaceholder: "Username...",
                 regPassLabel: "Password",
+                regPassPlaceholder: "••••••••",
                 regBtn: "Register",
                 regSwitchText: "Already have an account?",
                 regSwitchLink: "Login"
@@ -310,20 +320,25 @@
                 htmlRoot.setAttribute('lang', 'en');
             }
 
-            // Login texts
+            // Login texts & placeholders
             document.getElementById('loginTitle').innerText = t.loginTitle;
             document.getElementById('loginSubtitle').innerText = t.loginSubtitle;
             document.getElementById('loginUserLabel').innerText = t.loginUserLabel;
+            document.getElementById('loginUsername').placeholder = t.loginUserPlaceholder;
             document.getElementById('loginPassLabel').innerText = t.loginPassLabel;
+            document.getElementById('loginPassword').placeholder = t.loginPassPlaceholder;
             document.getElementById('loginBtn').innerText = t.loginBtn;
             document.getElementById('loginSwitch').innerHTML = `${t.loginSwitchText} <span onclick="switchForm('register')">${t.loginSwitchLink}</span>`;
 
-            // Register texts
+            // Register texts & placeholders
             document.getElementById('regTitle').innerText = t.regTitle;
             document.getElementById('regSubtitle').innerText = t.regSubtitle;
             document.getElementById('regEmailLabel').innerText = t.regEmailLabel;
+            document.getElementById('regEmail').placeholder = t.regEmailPlaceholder;
             document.getElementById('regUserLabel').innerText = t.regUserLabel;
+            document.getElementById('regUsername').placeholder = t.regUserPlaceholder;
             document.getElementById('regPassLabel').innerText = t.regPassLabel;
+            document.getElementById('regPassword').placeholder = t.regPassPlaceholder;
             document.getElementById('regBtn').innerText = t.regBtn;
             document.getElementById('regSwitch').innerHTML = `${t.regSwitchText} <span onclick="switchForm('login')">${t.regSwitchLink}</span>`;
         }
