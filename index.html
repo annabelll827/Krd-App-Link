@@ -1,1 +1,227 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krd Link - Authentication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 35px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .auth-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .auth-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0;
+            color: #ffffff;
+        }
+
+        .auth-header p {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin: 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            background: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 14px 16px;
+            color: #fff;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #38bdf8;
+            background: #111827;
+        }
+
+        .auth-btn {
+            background: #38bdf8;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            color: #0b0f19;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .auth-btn:hover {
+            opacity: 0.9;
+        }
+
+        .auth-switch {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        .auth-switch span {
+            color: #38bdf8;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .form-section {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-section.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        
+        <!-- Login Form -->
+        <div class="form-section active" id="loginSection">
+            <div class="auth-header">
+                <h2>چوونە ژوورەوە</h2>
+                <p>ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە</p>
+            </div>
+
+            <div class="form-group">
+                <label>ناوی بەکارهێنەر (Username)</label>
+                <input type="text" id="loginUsername" placeholder="ناوی بەکارهێنەر...">
+            </div>
+
+            <div class="form-group">
+                <label>وشەی تێپەڕ (Password)</label>
+                <input type="password" id="loginPassword" placeholder="••••••••">
+            </div>
+
+            <button class="auth-btn" onclick="handleLogin()">چوونە ژوورەوە</button>
+
+            <div class="auth-switch">
+                هەژمارت نییە؟ <span onclick="switchForm('register')">دروستکردنی ئەکاونت</span>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div class="form-section" id="registerSection">
+            <div class="auth-header">
+                <h2>دروستکردنی ئەکاونت</h2>
+                <p>ئیمەیڵ و وشەی تێپەڕ بنووسە بۆ دەستپێکردن</p>
+            </div>
+
+            <div class="form-group">
+                <label>ئیمەیڵ (Email)</label>
+                <input type="email" id="regEmail" placeholder="example@domain.com">
+            </div>
+
+            <div class="form-group">
+                <label>ناوی بەکارهێنەر (Username)</label>
+                <input type="text" id="regUsername" placeholder="ناوی بەکارهێنەر...">
+            </div>
+
+            <div class="form-group">
+                <label>وشەی تێپەڕ (Password)</label>
+                <input type="password" id="regPassword" placeholder="••••••••">
+            </div>
+
+            <button class="auth-btn" onclick="handleRegister()">تۆمارکردن</button>
+
+            <div class="auth-switch">
+                هەژمارت هەیە؟ <span onclick="switchForm('login')">چوونە ژوورەوە</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchForm(type) {
+            const loginSec = document.getElementById('loginSection');
+            const registerSec = document.getElementById('registerSection');
+
+            if (type === 'register') {
+                loginSec.classList.remove('active');
+                registerSec.classList.add('active');
+            } else {
+                registerSec.classList.remove('active');
+                loginSec.classList.add('active');
+            }
+        }
+
+        function handleRegister() {
+            const email = document.getElementById('regEmail').value.trim();
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+
+            if (email && username && password) {
+                localStorage.setItem('current_user', username);
+                localStorage.setItem('user_pass_' + username, password);
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('تکایە هەموو خانەکان پڕبکەرەوە!');
+            }
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (username && password) {
+                localStorage.setItem('current_user', username);
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('تکایە ناوی بەکارهێنەر و وشەی تێپەڕ بنووسە!');
+            }
+        }
+    </script>
+</body>
+</html>
