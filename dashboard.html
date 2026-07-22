@@ -64,7 +64,6 @@
             cursor: pointer;
         }
 
-        /* دوگمەی نوێی چوونە دەرەوە / گەڕانەوە لە باڕی سەرەوە */
         .top-logout-btn {
             background: #ef4444;
             border: none;
@@ -211,40 +210,10 @@
         .card-action-btn:hover {
             background: #374151;
         }
-
-        .test-links-box {
-            background: #111827;
-            border: 1px dashed rgba(56, 189, 248, 0.3);
-            border-radius: 20px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            text-align: center;
-        }
-
-        .test-btn {
-            background: #1f2937;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 10px;
-            color: #38bdf8;
-            font-family: 'Vazirmatn', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-        }
-
-        .test-btn:hover {
-            background: #374151;
-        }
     </style>
 </head>
 <body>
 
-    <!-- باڕی سەرەوە (ڕیزی زمان و دوگمەی چوونە دەرەوە) -->
     <header class="top-navbar">
         <div class="nav-left-actions">
             <div class="menu-icon-btn" onclick="toggleMenu()">
@@ -301,13 +270,6 @@
             </div>
         </div>
 
-        <!-- بەشی تاقیکردنەوەی سەردان و کلیکەکان -->
-        <div class="test-links-box">
-            <span style="font-size: 0.8rem; color: #9ca3af;">Testing / Simulation Tools</span>
-            <button class="test-btn" onclick="simulateProfileVisit()">Simulate Profile Visit (+1 View)</button>
-            <button class="test-btn" onclick="simulateExternalLinkClick()">Simulate Link Click (+1 Click)</button>
-        </div>
-
     </div>
 
     <script>
@@ -357,22 +319,6 @@
                 currentUser = trimmedName;
                 document.getElementById('displayUsername').innerText = trimmedName;
             }
-        }
-
-        function simulateProfileVisit() {
-            const viewsKey = `profile_views_${currentUser}`;
-            let views = parseInt(localStorage.getItem(viewsKey) || 0) + 1;
-            localStorage.setItem(viewsKey, views);
-            document.getElementById('profileViewsCount').innerText = views;
-            alert("A new user visited your profile! View count updated.");
-        }
-
-        function simulateExternalLinkClick() {
-            const clicksKey = `link_clicks_${currentUser}`;
-            let clicks = parseInt(localStorage.getItem(clicksKey) || 0) + 1;
-            localStorage.setItem(clicksKey, clicks);
-            document.getElementById('linkClicksCount').innerText = clicks;
-            alert("Someone clicked your link! Click count updated.");
         }
 
         function handleLogout() {
